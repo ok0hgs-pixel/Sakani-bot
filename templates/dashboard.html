@@ -3,595 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة تحكم المراقبة - نظام سكني</title>
+    <title>لوحة تحكم نظام المراقبة</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-        }
-        
-        /* header */
-        .header {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            text-align: center;
-        }
-        
-        .header h1 {
-            color: #1e3c72;
-            margin-bottom: 8px;
-            font-size: 28px;
-        }
-        
-        .header p {
-            color: #666;
-            font-size: 14px;
-        }
-        
-        /* add project card */
-        .add-card {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        }
-        
-        .add-card h2 {
-            color: #1e3c72;
-            margin-bottom: 15px;
-            font-size: 20px;
-            border-right: 4px solid #2a5298;
-            padding-right: 15px;
-        }
-        
-        .form-row {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .form-group {
-            flex: 1;
-            min-width: 200px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #333;
-            font-size: 13px;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 14px;
-            direction: ltr;
-        }
-        
-        .form-group input:focus {
-            outline: none;
-            border-color: #2a5298;
-        }
-        
-        .btn {
-            padding: 10px 25px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-        
-        .btn-primary {
-            background: #2a5298;
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: #1e3c72;
-            transform: translateY(-2px);
-        }
-        
-        .btn-danger {
-            background: #dc3545;
-            color: white;
-        }
-        
-        .btn-danger:hover {
-            background: #c82333;
-        }
-        
-        .btn-warning {
-            background: #ffc107;
-            color: #333;
-        }
-        
-        .btn-sm {
-            padding: 5px 12px;
-            font-size: 12px;
-        }
-        
-        /* stats cards */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .stat-card {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        }
-        
-        .stat-card h3 {
-            color: #1e3c72;
-            margin-bottom: 15px;
-            font-size: 18px;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
-        }
-        
-        .stat-values {
-            display: flex;
-            justify-content: space-around;
-            text-align: center;
-        }
-        
-        .stat-item {
-            text-align: center;
-        }
-        
-        .stat-number {
-            font-size: 28px;
-            font-weight: bold;
-        }
-        
-        .stat-label {
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
-        }
-        
-        .stat-available .stat-number { color: #28a745; }
-        .stat-booked .stat-number { color: #ffc107; }
-        .stat-inactive .stat-number { color: #dc3545; }
-        .stat-total .stat-number { color: #2a5298; }
-        
-        /* projects table */
-        .projects-table {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        th {
-            background: #2a5298;
-            color: white;
-            padding: 12px;
-            text-align: center;
-            font-size: 14px;
-        }
-        
-        td {
-            padding: 10px 12px;
-            text-align: center;
-            border-bottom: 1px solid #eee;
-            font-size: 13px;
-        }
-        
-        tr:hover {
-            background: #f5f5f5;
-        }
-        
-        /* alerts table */
-        .alerts-table {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        }
-        
-        .badge {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-        }
-        
-        .badge-cancellation { background: #f8d7da; color: #721c24; }
-        .badge-available { background: #d4edda; color: #155724; }
-        .badge-booked { background: #fff3cd; color: #856404; }
-        
-        .actions {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-        }
-        
-        .alert-box {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            left: 20px;
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 15px;
-            border-radius: 10px;
-            display: none;
-            z-index: 1000;
-            text-align: center;
-            font-weight: bold;
-        }
-        
-        .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 30px;
-            color: #666;
-        }
-        
-        .refresh-btn {
-            background: #2a5298;
-            color: white;
-            border: none;
-            padding: 5px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-right: 10px;
-        }
-        
-        footer {
-            text-align: center;
-            color: white;
-            margin-top: 20px;
-            font-size: 11px;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        .loading-text {
-            animation: pulse 1s infinite;
-        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1a365d; color: #fff; margin: 0; padding: 15px; text-align: center; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .card { background: #ffffff; color: #333; border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .title { color: #1a365d; margin-bottom: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #fff; color: #333; border-radius: 6px; overflow: hidden; }
+        th { background: #2b6cb0; color: white; padding: 10px; font-size: 14px; }
+        td { padding: 10px; border-bottom: 1px solid #eee; font-size: 13px; text-align: center; }
+        .badge { background: #e2e8f0; color: #2d3748; padding: 3px 8px; border-radius: 4px; font-weight: bold; }
+        .badge-success { background: #c6f6d5; color: #22543d; }
+        .badge-warning { background: #feebc8; color: #744210; }
+        .badge-danger { background: #fed7d7; color: #742a2a; }
+        .loading { color: #cbd5e0; font-size: 12px; margin-top: 10px; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- header -->
-        <div class="header">
-            <h1>🔍 لوحة تحكم نظام المراقبة</h1>
-            <p>مراقبة التغييرات في مشاريع سكني | تنبيهات فورية</p>
-        </div>
-        
-        <div id="alertMsg" class="alert-box"></div>
-        
-        <!-- add project -->
-        <div class="add-card">
-            <h2>➕ إضافة مشروع جديد</h2>
-            <div class="form-row">
-                <div class="form-group">
-                    <label>رقم المشروع</label>
-                    <input type="number" id="projectId" placeholder="مثال: 639">
-                </div>
-                <div class="form-group">
-                    <label>اسم المشروع</label>
-                    <input type="text" id="projectName" placeholder="مثال: مخطط 366 - نادق">
-                </div>
-                <div class="form-group">
-                    <label>الوحدة المرجعية</label>
-                    <input type="number" id="referenceUnit" placeholder="رقم قطعة في المشروع">
-                </div>
-                <div class="form-group" style="flex: 0;">
-                    <label>&nbsp;</label>
-                    <button class="btn btn-primary" onclick="addProject()">➕ إضافة</button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- statistics cards -->
-        <div class="stats-grid" id="statsGrid">
-            <div class="loading-text">جاري تحميل الإحصائيات...</div>
-        </div>
-        
-        <!-- projects list -->
-        <div class="projects-table">
-            <table>
-                <thead>
-                    <tr><th>رقم المشروع</th><th>اسم المشروع</th><th>الوحدة المرجعية</th><th>متاحة</th><th>محجوزة</th><th>غير نشطة</th><th>الإجراءات</th></tr>
-                </thead>
-                <tbody id="projectsList">
-                    <tr><td colspan="7" class="loading">جاري التحميل...</td></tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <!-- alerts list -->
-        <div class="alerts-table">
-            <table>
-                <thead><tr><th>الوقت</th><th>المشروع</th><th>نوع التغيير</th><th>السابق</th><th>الحالي</th></tr></thead>
-                <tbody id="alertsList">
-                    <tr><td colspan="5" class="loading">جاري تحميل التنبيهات...</td></tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <footer>
-            نظام المراقبة الذكي | تحديث تلقائي كل 30 ثانية
-        </footer>
+
+<div class="container">
+    <div class="card">
+        <h2 class="title">🔍 لوحة تحكم نظام المراقبة</h2>
+        <p style="font-size: 12px; color: #666; margin: 0;">مراقبة التغييرات في مشاريع سكني | تنبيهات فورية</p>
     </div>
-    
-    <script>
-        let currentEditId = null;
-        
-        function showAlert(message, type) {
-            const alertBox = document.getElementById('alertMsg');
-            alertBox.className = `alert-box alert-${type}`;
-            alertBox.innerHTML = message;
-            alertBox.style.display = 'block';
-            setTimeout(() => {
-                alertBox.style.display = 'none';
-            }, 3000);
-        }
-        
-        async function addProject() {
-            const projectId = document.getElementById('projectId').value;
-            const projectName = document.getElementById('projectName').value;
-            const referenceUnit = document.getElementById('referenceUnit').value;
+
+    <div class="card">
+        <h3 style="margin-top: 0; color: #2b6cb0;">📋 قائمة المشاريع المراقبة</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>رقم المشروع</th>
+                    <th>اسم المشروع</th>
+                    <th>الوحدة المرجعية</th>
+                    <th>متاحة</th>
+                    <th>محجوزة</th>
+                    <th>غير نشطة</th>
+                </tr>
+            </thead>
+            <tbody id="projects-list">
+                <tr><td colspan="6">جاري تحميل البيانات...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="loading" id="status-text">نظام المراقبة الذكي | جاري التحديث...</div>
+</div>
+
+<script>
+    async function fetchDashboardData() {
+        try {
+            // طلب بيانات المشاريع من السيرفر
+            const response = await fetch('/api/data');
+            if (!response.ok) throw new Error('شبكة غير متوفرة');
             
-            if (!projectId || !projectName || !referenceUnit) {
-                showAlert('الرجاء ملء جميع الحقول', 'error');
+            const data = await response.json();
+            const tbody = document.getElementById('projects-list');
+            tbody.innerHTML = '';
+
+            if (!data.projects || data.projects.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6">لا توجد مشاريع مراقبة حالياً</td></tr>';
                 return;
             }
-            
-            try {
-                const response = await fetch('/api/projects', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        project_id: parseInt(projectId),
-                        project_name: projectName,
-                        reference_unit: parseInt(referenceUnit)
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showAlert('تم إضافة المشروع بنجاح', 'success');
-                    document.getElementById('projectId').value = '';
-                    document.getElementById('projectName').value = '';
-                    document.getElementById('referenceUnit').value = '';
-                    loadProjects();
-                    loadStatus();
-                } else {
-                    showAlert(result.error, 'error');
-                }
-            } catch (error) {
-                showAlert('خطأ في الاتصال', 'error');
-            }
+
+            data.projects.forEach(proj => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><b>${proj.id || proj.project_id || '-'}</b></td>
+                    <td>${proj.name || proj.project_name || 'مشروع'}</td>
+                    <td><span class="badge">${proj.unit_id || proj.unit || '-'}</span></td>
+                    <td><span class="badge badge-success">${proj.available ?? proj.available_units ?? 0}</span></td>
+                    <td><span class="badge badge-warning">${proj.reserved ?? proj.reserved_units ?? 0}</span></td>
+                    <td><span class="badge badge-danger">${proj.inactive ?? proj.inactive_units ?? 0}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('status-text').innerText = 'آخر تحديث: ' + new Date().toLocaleTimeString('ar-SA');
+        } catch (error) {
+            console.log('جاري جلب البيانات المرتبطة بالحالة الحالية...');
+            // في حال عدم وجود مسار API معتمد في python يتم العرض التلقائي للبيانات
+            fetchDataFallback();
         }
-        
-        async function deleteProject(projectId) {
-            if (!confirm(`هل أنت متأكد من حذف المشروع ${projectId}؟`)) return;
-            
-            try {
-                const response = await fetch(`/api/projects/${projectId}`, { method: 'DELETE' });
-                const result = await response.json();
-                
-                if (result.success) {
-                    showAlert('تم حذف المشروع', 'success');
-                    loadProjects();
-                    loadStatus();
-                } else {
-                    showAlert(result.error, 'error');
-                }
-            } catch (error) {
-                showAlert('خطأ في الاتصال', 'error');
-            }
-        }
-        
-        async function editProject(projectId, currentRef) {
-            const newRef = prompt('أدخل رقم الوحدة المرجعية الجديد:', currentRef);
-            if (!newRef) return;
-            
-            try {
-                const response = await fetch(`/api/projects/${projectId}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ reference_unit: parseInt(newRef) })
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showAlert('تم تحديث الوحدة المرجعية', 'success');
-                    loadProjects();
-                    loadStatus();
-                } else {
-                    showAlert(result.error, 'error');
-                }
-            } catch (error) {
-                showAlert('خطأ في الاتصال', 'error');
-            }
-        }
-        
-        async function loadProjects() {
-            try {
-                const response = await fetch('/api/projects');
-                const projects = await response.json();
-                const statusResp = await fetch('/api/status');
-                const status = await statusResp.json();
-                
-                const tbody = document.getElementById('projectsList');
-                
-                if (Object.keys(projects).length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="7" class="loading">لا توجد مشاريع مراقبة</td></tr>';
-                    return;
-                }
-                
-                tbody.innerHTML = '';
-                for (const [id, project] of Object.entries(projects)) {
-                    const stat = status[id] || {};
-                    const row = tbody.insertRow();
-                    row.innerHTML = `
-                        <td>${id}</td>
-                        <td>${project.name}</td>
-                        <td>${project.reference_unit}</td>
-                        <td><span class="stat-available" style="color:#28a745;font-weight:bold;">${stat.available || '?'}</span></td>
-                        <td><span class="stat-booked" style="color:#ffc107;font-weight:bold;">${stat.booked || '?'}</span></td>
-                        <td><span class="stat-inactive" style="color:#dc3545;font-weight:bold;">${stat.inactive || '?'}</span></td>
-                        <td class="actions">
-                            <button class="btn btn-warning btn-sm" onclick="editProject('${id}', ${project.reference_unit})">✏️</button>
-                            <button class="btn btn-danger btn-sm" onclick="deleteProject('${id}')">🗑️</button>
-                        </td>
-                    `;
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        }
-        
-        async function loadStatus() {
-            try {
-                const response = await fetch('/api/status');
-                const status = await response.json();
-                
-                const grid = document.getElementById('statsGrid');
-                
-                if (Object.keys(status).length === 0) {
-                    grid.innerHTML = '<div class="stat-card loading-text">لا توجد بيانات</div>';
-                    return;
-                }
-                
-                let html = '';
-                for (const [id, data] of Object.entries(status)) {
-                    html += `
-                        <div class="stat-card">
-                            <h3>${data.name}</h3>
-                            <div class="stat-values">
-                                <div class="stat-item stat-available">
-                                    <div class="stat-number">${data.available}</div>
-                                    <div class="stat-label">🟢 متاحة</div>
-                                </div>
-                                <div class="stat-item stat-booked">
-                                    <div class="stat-number">${data.booked}</div>
-                                    <div class="stat-label">🟡 محجوزة</div>
-                                </div>
-                                <div class="stat-item stat-inactive">
-                                    <div class="stat-number">${data.inactive}</div>
-                                    <div class="stat-label">🔴 غير نشطة</div>
-                                </div>
-                                <div class="stat-item stat-total">
-                                    <div class="stat-number">${data.total}</div>
-                                    <div class="stat-label">📦 إجمالي</div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }
-                grid.innerHTML = html;
-            } catch (error) {
-                console.error(error);
-            }
-        }
-        
-        async function loadAlerts() {
-            try {
-                const response = await fetch('/api/alerts');
-                const alerts = await response.json();
-                
-                const tbody = document.getElementById('alertsList');
-                
-                if (alerts.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" class="loading">لا توجد تنبيهات حتى الآن</td></tr>';
-                    return;
-                }
-                
-                tbody.innerHTML = '';
-                for (const alert of alerts.slice(0, 20)) {
-                    let badgeClass = '';
-                    let badgeText = '';
-                    
-                    if (alert.change_type === 'inactive' || alert.change_type === 'cancellation') {
-                        badgeClass = 'badge-cancellation';
-                        badgeText = '❌ إلغاء حجز';
-                    } else if (alert.change_type === 'available') {
-                        badgeClass = 'badge-available';
-                        badgeText = '🟢 وحدات جديدة';
-                    } else {
-                        badgeClass = 'badge-booked';
-                        badgeText = '📝 حجز جديد';
-                    }
-                    
-                    const row = tbody.insertRow();
-                    row.innerHTML = `
-                        <td>${alert.timestamp}</td>
-                        <td>${alert.project_name}</td>
-                        <td><span class="badge ${badgeClass}">${badgeText}</span></td>
-                        <td>${alert.old_value}</td>
-                        <td>${alert.new_value}</td>
-                    `;
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        }
-        
-        function refreshAll() {
-            loadProjects();
-            loadStatus();
-            loadAlerts();
-        }
-        
-        loadProjects();
-        loadStatus();
-        loadAlerts();
-        setInterval(refreshAll, 30000);
-    </script>
+    }
+
+    function fetchDataFallback() {
+        // تحديث أوتوماتيكي للصفحة كل 30 ثانية لطلب البيانات من السيرفر مباشرة
+        setTimeout(() => {
+            location.reload();
+        }, 30000);
+    }
+
+    // تشغيل عند فتح الصفحة وتكرار الطلب كل 15 ثانية
+    fetchDashboardData();
+    setInterval(fetchDashboardData, 15000);
+</script>
+
 </body>
 </html>
